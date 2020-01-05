@@ -1,0 +1,3 @@
+* UEFI install
+  refs: https://gihyo.jp/admin/serial/01/ubuntu-recipe/0441
+
