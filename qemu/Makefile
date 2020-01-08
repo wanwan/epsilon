@@ -6,7 +6,7 @@ DD=dd
 IMAGE_FILE=image.img
 IMAGE_SIZE=10240
 
-.PHONY: run image clean make_partition kernel
+.PHONY: run image install uefi kernel clean make_partition
 
 default: run
 
@@ -21,7 +21,7 @@ image:
 	sudo mkfs.ext2 /dev/loop0p2
 	sudo losetup -d /dev/loop0
 
-kernel:
+install:uefi kernel
 	mkdir -p mnt/0
 	mkdir -p mnt/1
 	sudo losetup -Pf $(IMAGE_FILE)
@@ -30,6 +30,9 @@ kernel:
 	sudo umount ./mnt/0
 	sudo umount ./mnt/1
 	sudo losetup -d /dev/loop0
+
+uefi:
+
 
 clean:
 	rm $(IMAGE_FILE)
