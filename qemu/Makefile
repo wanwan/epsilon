@@ -6,7 +6,7 @@ DD=dd
 IMAGE_FILE=image.img
 IMAGE_SIZE=10240
 
-.PHONY: run image make_partition
+.PHONY: run image clean make_partition kernel
 
 default: run
 
@@ -15,7 +15,21 @@ run: image
 
 image:
 	$(DD) if=/dev/zero of=$(IMAGE_FILE) bs=1024 count=$(IMAGE_SIZE)
-	make make_partition 
+	make make_partition
+	sudo losetup -Pf $(IMAGE_FILE)
+	sudo mkfs.fat -F 32 /dev/loop0p1
+	sudo mkfs.ext2 /dev/loop0p2
+	sudo losetup -d /dev/loop0
+
+kernel:
+	mkdir -p mnt/0
+	mkdir -p mnt/1
+	sudo losetup -Pf $(IMAGE_FILE)
+	sudo mount /dev/loop0 ./mnt/0
+	sudo mount /dev/loop1 ./mnt/1
+	sudo umount ./mnt/0
+	sudo umount ./mnt/1
+	sudo losetup -d /dev/loop0
 
 clean:
 	rm $(IMAGE_FILE)
