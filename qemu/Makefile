@@ -11,7 +11,8 @@ IMAGE_SIZE=10240
 default: run
 
 run: image
-	$(QEMU) $(UEFI_CODE) $(UEFI_FLASH)
+#	$(QEMU) $(UEFI_CODE) $(UEFI_FLASH) -hda $(IMAGE_FILE) -net none
+	$(QEMU) $(UEFI_CODE) $(UEFI_FLASH) -hda fat:rw:efi.image/HelloWorld -net none
 
 image:
 	$(DD) if=/dev/zero of=$(IMAGE_FILE) bs=1024 count=$(IMAGE_SIZE)
